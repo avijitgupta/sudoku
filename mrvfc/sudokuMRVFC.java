@@ -1,4 +1,4 @@
-
+package mrvfc;
 import java.io.DataInputStream;
 import java.io.FileInputStream;
 import java.util.ArrayList;
@@ -27,6 +27,7 @@ public class sudokuMRVFC {
 	static int numberUnusedPositions;
 	static int unmodifiable = -10;
 	static int modifiable = 10;
+	static int count = 0;
 	public static void displayBoard()
 	{
 		for(int i = 0 ; i < N ; i ++)
@@ -90,6 +91,8 @@ public class sudokuMRVFC {
 		{
 			if(sudokuBoard[row][i][N+2] !=unmodifiable && i!=col)
 			{
+				count++;
+
 				if(sudokuBoard[row][i][value+1] > 0)
 				{
 					sudokuBoard[row][i][1] --;
@@ -108,6 +111,8 @@ public class sudokuMRVFC {
 		{
 			if(sudokuBoard[i][col][N+2] !=unmodifiable && i!=row)
 			{
+				count++;
+
 				if(sudokuBoard[i][col][value+1] > 0)
 				{
 					sudokuBoard[i][col][1] --;
@@ -131,6 +136,8 @@ public class sudokuMRVFC {
 			{
 				if(sudokuBoard[sX + i][sY + j][N+2]!=unmodifiable && (sX+i)!=row && (sY+j)!=col)
 				{
+					count++;
+
 					if(sudokuBoard[sX + i][sY + j][value+1] >0)
 					{
 						sudokuBoard[sX + i][sY + j][1]--;
@@ -236,17 +243,12 @@ public class sudokuMRVFC {
 		{
 			sortedArray[level++] = priority.get(i);
 		}
-	/*	for(int i = 0 ; i < numberUnusedPositions; i ++)
-		{
-			System.out.println(sortedArray[i].x+ " " + sortedArray[i].y);
-		}*/
 		return sortedArray;
 	}
 	
 	public static void solve(pair unusedPos[], int level)
 	{
-		
-
+	
 		if(level >=numberUnusedPositions)
 		{
 			System.out.println("Sudoku:");
@@ -259,17 +261,12 @@ public class sudokuMRVFC {
 			pair unsolvedValue = unusedPos[level];
 			int row = unsolvedValue.x;
 			int col = unsolvedValue.y;
-			//System.out.println("Enter " + level + " " + row + " " + col);
 			for(int i = 1; i <= N ; i ++)
 			{							
 				//System.out.println("Loop ");
 				if(sudokuBoard[row][col][i+1]>0)
 				{
-				//	System.out.println("If ");
-
-				//	System.out.print("level " + level);
-	
-					//System.out.println("Disp " + sudokuBoard[row][col][i+1]);
+				
 					sudokuBoard[row][col][0] = i;
 					//displayConstraints();
 					boolean possible = updateBoard(i, row, col, unusedPos, level);
@@ -277,17 +274,6 @@ public class sudokuMRVFC {
 					{
 						pair[] recArray; //= new pair[numberUnusedPositions];
 						recArray = sortUnusedPositions(unusedPos, level+1);
-					/*	for(int j = 0 ; j < numberUnusedPositions; j++)
-						{
-							System.out.print("(" + recArray[j].x+ ", "+recArray[j].y + ") ");
-						}*/
-					/*	System.out.println();
-						System.out.println(row+" " + col);
-
-						//displayBoard();
-						System.out.println();
-						
-						System.out.println("Back " + level);*/
 						solve(recArray, level + 1);
 					}
 					replenishBoard(i, row, col);
@@ -369,6 +355,8 @@ public class sudokuMRVFC {
 			for(int i = 0 ; i < numberUsedPositions;i++ )
 				updateUsedPositions(i);
 			solve(unusedPositions, 0);
+			System.out.println("Consistency Checks: " + count);
+
 			//System.out.println(M + " "+  N +" " + K);
 			//displayBoard();
 	}

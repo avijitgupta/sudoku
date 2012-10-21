@@ -1,4 +1,4 @@
-
+package ac;
 import java.io.DataInputStream;
 import java.io.FileInputStream;
 import java.util.ArrayList;
@@ -46,6 +46,7 @@ public class sudokuAC {
 	static int modifiable = 10;
 	static pair[][] pairHash;
 	static int numberUsedPositions;
+	static long count =0;
 	public static void displayBoard()
 	{
 		for(int i = 0 ; i < N ; i ++)
@@ -111,6 +112,7 @@ public class sudokuAC {
 			{
 				if(sudokuBoard[row][i][value+1] > 0)
 				{
+					count++;
 					sudokuBoard[row][i][1] --;
 				}
 				sudokuBoard[row][i][value+1] --;
@@ -126,7 +128,8 @@ public class sudokuAC {
 			if(sudokuBoard[i][col][N+2] !=unmodifiable && i!=row)
 			{
 				if(sudokuBoard[i][col][value+1] > 0)
-				{
+				{				
+					count++;
 					sudokuBoard[i][col][1] --;
 				}
 				sudokuBoard[i][col][value+1] --;
@@ -149,6 +152,7 @@ public class sudokuAC {
 				{
 					if(sudokuBoard[sX + i][sY + j][value+1] >0)
 					{
+						count++;
 						sudokuBoard[sX + i][sY + j][1]--;
 					}
 					
@@ -172,6 +176,7 @@ public class sudokuAC {
 				{
 					if(sudokuBoard[row][i][N+2] !=unmodifiable && i!=col)
 					{
+	
 						if(sudokuBoard[row][i][value+1] == 0)
 						{
 							sudokuBoard[row][i][1] ++;
@@ -187,6 +192,7 @@ public class sudokuAC {
 				{
 					if(sudokuBoard[i][col][N+2] !=unmodifiable && i!=row)
 					{
+
 						if(sudokuBoard[i][col][value+1] == 0)
 						{
 							sudokuBoard[i][col][1] ++;
@@ -208,6 +214,7 @@ public class sudokuAC {
 					{
 						if(sudokuBoard[sX + i][sY + j][N+2]!=unmodifiable && (sX+i)!=row && (sY+j)!=col)
 						{
+
 							if(sudokuBoard[sX + i][sY + j][value+1] ==0)
 							{
 								sudokuBoard[sX + i][sY + j][1]++;
@@ -256,7 +263,7 @@ public class sudokuAC {
 	
 	public static void solve(pair unusedPos[], int level)
 	{
-		
+	
 
 		if(level >=numberUnusedPositions)
 		{
@@ -398,6 +405,8 @@ public class sudokuAC {
 			}*/
 			
 			solve(unusedPositions, 0);
+			System.out.println("Consistency Checks: " + count);
+
 			//updateConstraints();
 
 	}

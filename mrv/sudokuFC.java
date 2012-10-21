@@ -23,6 +23,7 @@ public class sudokuFC {
 	static int numberUnusedPositions;
 	static int unmodifiable = -10;
 	static int modifiable = 10;
+	static long count = 0;
 	public static void displayBoard()
 	{
 		for(int i = 0 ; i < N ; i ++)
@@ -74,8 +75,10 @@ public class sudokuFC {
 		{
 			if(sudokuBoard[row][i][N+2] !=unmodifiable && i!=col)
 			{
+
 				if(sudokuBoard[row][i][value+1] > 0)
 				{
+					count ++;
 					sudokuBoard[row][i][1] --;
 				}
 				sudokuBoard[row][i][value+1] --;
@@ -90,8 +93,10 @@ public class sudokuFC {
 		{
 			if(sudokuBoard[i][col][N+2] !=unmodifiable && i!=row)
 			{
+
 				if(sudokuBoard[i][col][value+1] > 0)
 				{
+					count ++;
 					sudokuBoard[i][col][1] --;
 				}
 				sudokuBoard[i][col][value+1] --;
@@ -113,8 +118,10 @@ public class sudokuFC {
 			{
 				if(sudokuBoard[sX + i][sY + j][N+2]!=unmodifiable && (sX+i)!=row && (sY+j)!=col)
 				{
+
 					if(sudokuBoard[sX + i][sY + j][value+1] >0)
 					{
+						count ++;
 						sudokuBoard[sX + i][sY + j][1]--;
 					}
 					
@@ -209,10 +216,8 @@ public class sudokuFC {
 				if(sudokuBoard[row][col][i+1]>0)
 				{
 					
-					//System.out.println("Disp " + sudokuBoard[row][col][i+1]);
 					sudokuBoard[row][col][0] = i;
 					boolean possible = updateBoard(i, row, col);
-					//displayBoard();
 					if(possible)solve(unsolvedIndex + 1);
 					replenishBoard(i, row, col);
 				}
@@ -222,44 +227,6 @@ public class sudokuFC {
 			return;
 			
 		}	
-	}
-	
-	public static boolean isRowConsistant(int row, int value)
-	{
-		for(int col = 0 ; col < N ; col ++)
-		{
-			if(sudokuBoard[row][col][0] == value)
-				return false;
-		}
-		return true;
-	}
-	
-	public static boolean isColumnConsistant(int col, int value)
-	{
-		for(int row = 0 ; row < N ; row ++)
-		{
-			if(sudokuBoard[row][col][0] == value)
-				return false;
-		}
-		return true;
-	}
-	
-	public static boolean isBlockConsistant(pair currentIndex, int value)
-	{
-		int numBlocksX = (int) (currentIndex.x / M);
-		int numBlocksY = (int) (currentIndex.y / K);
-		int startX = numBlocksX * M;
-		int startY = numBlocksY * K;
-	//	System.out.println("For "+ currentIndex.x + " " + currentIndex.y + " origin " + startX + " " + startY);
-		for(int i = 0 ; i < M ; i++)
-		{
-			for(int j = 0 ; j < K ; j ++)
-			{
-				if(sudokuBoard[startX + i][startY + j] [0] == value)
-					return false;
-			}
-		}
-		return true;
 	}
 	
 	public static void updateUsedPositions(int usedIndex)
@@ -329,6 +296,8 @@ public class sudokuFC {
 			for(int i = 0 ; i < numberUsedPositions;i++ )
 				updateUsedPositions(i);
 			solve(0);
+			System.out.println("Consistency Checks: " + count);
+
 			//System.out.println(M + " "+  N +" " + K);
 			//displayBoard();
 	}
