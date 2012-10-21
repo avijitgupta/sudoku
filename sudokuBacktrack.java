@@ -19,7 +19,7 @@ public class sudokuBacktrack {
 	static int[][] sudokuBoard;
 	static pair[] unusedPositions;
 	static int numberUnusedPositions;
-	
+	static long count = 0 ;
 	public static void displayBoard()
 	{
 		for(int i = 0 ; i < N ; i ++)
@@ -66,6 +66,7 @@ public class sudokuBacktrack {
 	{
 		for(int col = 0 ; col < N ; col ++)
 		{
+			count++;
 			if(sudokuBoard[row][col] == value)
 				return false;
 		}
@@ -76,6 +77,7 @@ public class sudokuBacktrack {
 	{
 		for(int row = 0 ; row < N ; row ++)
 		{
+			count++;
 			if(sudokuBoard[row][col] == value)
 				return false;
 		}
@@ -93,6 +95,7 @@ public class sudokuBacktrack {
 		{
 			for(int j = 0 ; j < K ; j ++)
 			{
+				count++;
 				if(sudokuBoard[startX + i][startY + j] == value)
 					return false;
 			}
@@ -138,6 +141,7 @@ public class sudokuBacktrack {
 		//	for(int i = 0 ; i < numberUnusedPositions ; i++)
 			//	System.out.println(unusedPositions[i].x + " " + unusedPositions[i].y);
 			solve(0);
+			System.out.println("Consistency Checks: " + count);
 			//System.out.println(M + " "+  N +" " + K);
 			//displayBoard();
 	}
